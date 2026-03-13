@@ -101,3 +101,36 @@ const sampleTracks = [
 ];
 
 // Seed database with sample data
+// database/seed.js
+require('dotenv').config();
+const { sequelize, Track } = require('./setup');
+
+// sampleTracks should be whatever array the starter repo gives you.
+// Example shape:
+const sampleTracks = [
+  {
+    songTitle: 'Song A',
+    artistName: 'Artist A',
+    albumName: 'Album A',
+    genre: 'Pop',
+    duration: 210,
+    releaseYear: 2020
+  },
+  // ...more tracks
+];
+
+async function seed() {
+  try {
+    await sequelize.authenticate();
+    await Track.bulkCreate(sampleTracks);   // bulkCreate for seeding[web:8]
+    console.log('Database seeded.');
+  } catch (err) {
+    console.error('Error seeding DB:', err);
+  } finally {
+    await sequelize.close();
+  }
+}
+
+if (require.main === module) {
+  seed();
+}
